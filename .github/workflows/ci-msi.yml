@@ -21,7 +21,7 @@ jobs:
           choco install wixtoolset --no-progress -y
 
       - name: Build installer
-        shell: pwsh -noprofile -c
+        shell: pwsh -noprofile -c "{0}"
         run: |
           .\installer\build.ps1
 
