@@ -78,6 +78,17 @@ Output (depending on environment):
 
 See `installer/README.md` for prerequisites and details.
 
+Where to find the installer
+
+- Built installers and artifacts are placed under the `installer/` folder in the repository when you run the build script locally.
+- On GitHub, CI-built artifacts (MSI or ZIP) will be attached to workflow runs and can be downloaded from the Actions run page or release assets when the CI workflow publishes them.
+- Common local outputs after running `pwsh.exe .\installer\build.ps1`:
+  - installer/FreePresenter.msi
+  - installer/FreePresenter.zip
+  - installer/install.ps1
+  - installer/uninstall.ps1
+
+
 Controls
 
 - Viewer window behavior:
