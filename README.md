@@ -61,44 +61,6 @@ Packaging / Installer
 dotnet publish -c Release -r win-x64 --self-contained false -o ./artifacts
 ```
 
-Installer (WiX / fallback)
-
-- This repository now contains a WiX-based installer workflow under the `installer/` folder.
-- Primary build path: WiX Toolset CLI (heat/candle/light) will be used to build an MSI when available on PATH.
-- Fallback: if WiX CLI is not present the build script will produce a self-contained publish ZIP and simple PowerShell installer scripts.
-- To build the installer or fallback artifacts, run from the repository root in PowerShell:
-
-```
-pwsh.exe .\installer\build.ps1
-```
-
-Output (depending on environment):
-- `installer/FreePresenter.msi` (if WiX CLI available)
-- `installer/FreePresenter.zip`, `installer/install.ps1`, `installer/uninstall.ps1` (fallback)
-
-See `installer/README.md` for prerequisites and details.
-
-Where to find the installer
-
-- Built installers and artifacts are placed under the `installer/` folder in the repository when you run the build script locally.
-- On GitHub, CI-built artifacts (MSI or ZIP) will be attached to workflow runs and can be downloaded from the Actions run page or release assets when the CI workflow publishes them.
-- Common local outputs after running `pwsh.exe .\installer\build.ps1`:
-  - installer/FreePresenter.msi
-  - installer/FreePresenter.zip
-  - installer/install.ps1
-  - installer/uninstall.ps1
-
-
-Controls
-
-- Viewer window behavior:
-  - F11: toggle fullscreen / windowed mode for the viewer.
-  - ESC: when in fullscreen restores the viewer to windowed mode (does not close the window).
-  - Maximize button: switches the viewer to borderless fullscreen on that monitor.
-  - Close button: visible in windowed mode; closes the viewer when pressed.
-  - The top bar on the main window is draggable to move the window.
-
-
 Contributing
 
 - Fork the repository and open a pull request for changes.
