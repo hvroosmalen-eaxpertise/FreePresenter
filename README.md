@@ -78,6 +78,16 @@ Output (depending on environment):
 
 See `installer/README.md` for prerequisites and details.
 
+Controls
+
+- Viewer window behavior:
+  - F11: toggle fullscreen / windowed mode for the viewer.
+  - ESC: when in fullscreen restores the viewer to windowed mode (does not close the window).
+  - Maximize button: switches the viewer to borderless fullscreen on that monitor.
+  - Close button: visible in windowed mode; closes the viewer when pressed.
+  - The top bar on the main window is draggable to move the window.
+
+
 Contributing
 
 - Fork the repository and open a pull request for changes.
