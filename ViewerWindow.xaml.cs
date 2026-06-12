@@ -50,8 +50,10 @@ public partial class ViewerWindow : Window
 
         var screen = screens[screenIndex];
 
-        WindowStyle = WindowStyle.None;
-        ResizeMode = ResizeMode.NoResize;
+        // Position on the target screen and allow resizing.
+        // Use a normal window chrome so the window can be resized by the user.
+        WindowStyle = WindowStyle.SingleBorderWindow;
+        ResizeMode = ResizeMode.CanResize;
         WindowState = WindowState.Normal;
         Left = screen.Bounds.Left;
         Top = screen.Bounds.Top;
@@ -82,6 +84,7 @@ public partial class ViewerWindow : Window
 
     private void BtnClose_Click(object sender, RoutedEventArgs e)
     {
-        Application.Current.Shutdown();
+        // Close only this viewer window instead of shutting down the whole application.
+        Close();
     }
 }

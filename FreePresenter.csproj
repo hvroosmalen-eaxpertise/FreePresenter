@@ -10,4 +10,8 @@
     <Win32Icon>assets\FreePresenter.ico</Win32Icon>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include=".github\workflows\ci.yml" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="FreePresenter" Language="1033" Version="1.0.0.0" Manufacturer="FreePresenter" UpgradeCode="d2a3cb8a-9c3d-4f2a-8b2b-1f0b9a9c3e12">
+	<Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine" />
+
+	<MajorUpgrade DowngradeErrorMessage="A newer version of FreePresenter is already installed." />
+
+	<MediaTemplate />
+
+	<Feature Id="ProductFeature" Title="FreePresenter" Level="1">
+	  <ComponentGroupRef Id="AppFiles" />
+	  <ComponentGroupRef Id="Shortcuts" />
+	</Feature>
+
+	<Directory Id="TARGETDIR" Name="SourceDir">
+	  <Directory Id="ProgramFilesFolder">
+		<Directory Id="INSTALLFOLDER" Name="FreePresenter" />
+	  </Directory>
+
+	  <Directory Id="ProgramMenuFolder">
+		<Directory Id="ApplicationProgramsFolder" Name="FreePresenter" />
+	  </Directory>
+	</Directory>
+
+  </Product>
+</Wix>
