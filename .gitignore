@@ -1,0 +1,15 @@
+.vs/
+bin/
+obj/
+publish/
+installer/Output/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.log
+# Ignore Visual Studio Code settings
+.vscode/
+# Ignore NuGet packages
+*.nupkg
+packages/
