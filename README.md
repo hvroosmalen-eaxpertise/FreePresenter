@@ -1,76 +1,53 @@
 # FreePresenter
 
-FreePresenter is a simple, lightweight presentation app built on .NET 10. This repository contains the application source, project files, installer scripts, and assets used to build and distribute the app.
+FreePresenter is a simple, lightweight presentation app built on .NET 10. It lets you drag-and-drop an image or video file onto the main window, then view it full-screen on any monitor.
 
-Badges
-
-- CI: (add your CI badge)
-- Package: (add package badge if applicable)
-
-Summary
-
-FreePresenter aims to provide a minimal, extensible presentation experience using .NET 10 technologies. The repo includes source code, sample content, and packaging helpers.
-
-Prerequisites
+## Prerequisites
 
 - .NET 10 SDK — https://dotnet.microsoft.com
-- Visual Studio 2026 (Community/Professional/Enterprise) with the .NET 10 workload (Windows)
-- PowerShell Core (pwsh) recommended for automation on Windows/macOS/Linux
+- Visual Studio 2026 with the .NET 10 workload (Windows)
+- PowerShell Core (pwsh) recommended for automation
 
-Quickstart — CLI (dotnet)
-
-1. Open a terminal in the repository root.
-2. Restore dependencies:
+## Quickstart
 
 ```
-dotnet restore
+dotnet restore FreePresenter.csproj
+dotnet build FreePresenter.csproj -c Release
+dotnet run --project FreePresenter.csproj
 ```
 
-3. Build the solution or projects:
+## Controls
 
-```
-dotnet build -c Release
-```
+| Key | Action |
+|-----|--------|
+| **F11** | Toggle viewer between full-screen and windowed mode |
+| **ESC** | Exit full-screen back to windowed mode |
+| **Maximize** (in windowed) | Switch to borderless full-screen |
+| **Drag** title bar (main window) | Move the window |
 
-4. Run an executable project (replace the project path if needed):
+- Drop an image or video file onto the main window to open it.
+- The viewer opens in windowed mode (1280×720) by default.
+- Close the viewer (✕ or ESC in windowed) to return to the main window.
 
-```
-dotnet run --project src/FreePresenter/FreePresenter.csproj
-```
+## Installer
 
-Testing
+Build scripts are in `installer/`:
 
-- Run unit tests:
+- **WiX MSI** — run `pwsh.exe .\installer\build.ps1` to produce `FreePresenter.msi`
+- **Fallback** — the same script creates a ZIP + install/uninstall PowerShell scripts if WiX is not available
+- **MSIX** — see `installer/msix/` for packaging via MakeAppx
 
-```
-dotnet test
-```
+## CI
 
-Visual Studio (Windows) — Build & Run
+| Workflow | Status |
+|----------|--------|
+| CI (build + publish) | [![CI](https://github.com/hvroosmalen-eaxpertise/FreePresenter/actions/workflows/ci.yml/badge.svg)](https://github.com/hvroosmalen-eaxpertise/FreePresenter/actions/workflows/ci.yml) |
+| Build MSI | [![Build MSI](https://github.com/hvroosmalen-eaxpertise/FreePresenter/actions/workflows/ci-msi.yml/badge.svg)](https://github.com/hvroosmalen-eaxpertise/FreePresenter/actions/workflows/ci-msi.yml) |
 
-1. Open `FreePresenter.sln` in Visual Studio 2026.
-2. Ensure the .NET 10 workloads are installed.
-3. Set the desired startup project, then use Build > Build Solution (Ctrl+Shift+B) and Debug > Start Debugging (F5) or Start Without Debugging (Ctrl+F5).
+## Contributing
 
-Packaging / Installer
+Fork the repo and open a pull request. Follow the existing code style.
 
-- If this repo includes an installer script (Inno Setup), see the `installer/` directory for `.iss` files and instructions.
-- Example publish command (produce artifacts for distribution):
+## License
 
-```
-dotnet publish -c Release -r win-x64 --self-contained false -o ./artifacts
-```
-
-Contributing
-
-- Fork the repository and open a pull request for changes.
-- Follow the existing code style and include tests for new functionality.
-- Update this README when adding new instructions, scripts, or CI integration.
-
-License
-
-- Add a `LICENSE` file and update this section with the chosen license (for example: MIT).
-
-Support / Contact
-
-- Open issues on the repository for bug reports or feature requests.
+Mozilla Public License 2.0 — see [LICENSE](LICENSE).
