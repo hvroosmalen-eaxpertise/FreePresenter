@@ -59,7 +59,7 @@ if ($hasHeat -and $hasCandle -and $hasLight) {
 	$exeName = 'FreePresenter.exe'
 	$harvestXml = Get-Content $harvestFile -Raw
 	# Match File Id="..." Source="$(var.SourceDir)\FreePresenter.exe" or similar
-	if ($harvestXml -match 'File\s+Id="([^\"]+)"\s+Source="[^\"]*' + [regex]::Escape($exeName) + '"') {
+	if ($harvestXml -match 'File\s+Id="([^"]+)"\s+Source="[^"]*' + [regex]::Escape($exeName) + '"') {
 		$exeFileId = $matches[1]
 		Write-Host "Found EXE file id: $exeFileId"
 	} else {
