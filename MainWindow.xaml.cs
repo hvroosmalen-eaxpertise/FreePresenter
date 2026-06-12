@@ -18,6 +18,14 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
+    private void TopBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+        {
+            DragMove();
+        }
+    }
+
     private void Window_DragEnter(object sender, DragEventArgs e)
     {
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -81,7 +89,8 @@ public partial class MainWindow : Window
             _viewer.LoadFile(filePath);
             var screens = ScreenUtilities.GetScreens();
             int targetScreen = screens.Length > 1 ? 1 : 0;
-            _viewer.ShowFullScreen(targetScreen);
+            // Open viewer in windowed mode by default; user can maximize for fullscreen
+            _viewer.ShowFullScreen(targetScreen, false);
             _viewer.Show();
             _viewer.Closed += (_, _) =>
             {

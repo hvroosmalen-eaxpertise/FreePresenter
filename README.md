@@ -61,6 +61,23 @@ Packaging / Installer
 dotnet publish -c Release -r win-x64 --self-contained false -o ./artifacts
 ```
 
+Installer (WiX / fallback)
+
+- This repository now contains a WiX-based installer workflow under the `installer/` folder.
+- Primary build path: WiX Toolset CLI (heat/candle/light) will be used to build an MSI when available on PATH.
+- Fallback: if WiX CLI is not present the build script will produce a self-contained publish ZIP and simple PowerShell installer scripts.
+- To build the installer or fallback artifacts, run from the repository root in PowerShell:
+
+```
+pwsh.exe .\installer\build.ps1
+```
+
+Output (depending on environment):
+- `installer/FreePresenter.msi` (if WiX CLI available)
+- `installer/FreePresenter.zip`, `installer/install.ps1`, `installer/uninstall.ps1` (fallback)
+
+See `installer/README.md` for prerequisites and details.
+
 Contributing
 
 - Fork the repository and open a pull request for changes.

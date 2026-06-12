@@ -8,6 +8,9 @@ namespace FreePresenter;
 public partial class ViewerWindow : Window
 {
     private bool _isVideo;
+    private bool _isFullScreen;
+    private int _screenIndex;
+    private Rect _previousBounds;
 
     public ViewerWindow()
     {
@@ -42,7 +45,7 @@ public partial class ViewerWindow : Window
         Title = Path.GetFileName(filePath);
     }
 
-    public void ShowFullScreen(int screenIndex)
+    public void ShowFullScreen(int screenIndex, bool fullScreen = true)
     {
         var screens = ScreenUtilities.GetScreens();
         if (screenIndex < 0 || screenIndex >= screens.Length)
@@ -50,15 +53,68 @@ public partial class ViewerWindow : Window
 
         var screen = screens[screenIndex];
 
-        // Position on the target screen and allow resizing.
-        // Use a normal window chrome so the window can be resized by the user.
-        WindowStyle = WindowStyle.SingleBorderWindow;
-        ResizeMode = ResizeMode.CanResize;
-        WindowState = WindowState.Normal;
-        Left = screen.Bounds.Left;
-        Top = screen.Bounds.Top;
-        Width = screen.Bounds.Width;
-        Height = screen.Bounds.Height;
+        _isFullScreen = fullScreen;
+        _screenIndex = screenIndex;
+
+        if (fullScreen)
+        {
+            // Remember previous bounds to restore later
+            _previousBounds = new Rect(Left, Top, Width, Height);
+
+            // Borderless full-screen using maximized state for proper behavior
+            WindowStyle = WindowStyle.None;
+            ResizeMode = ResizeMode.NoResize;
+            Topmost = true;
+            ShowInTaskbar = false;
+            btnClose.Visibility = Visibility.Collapsed;
+
+            // Position window on target screen and maximize
+            Left = screen.Bounds.Left;
+            Top = screen.Bounds.Top;
+            Width = screen.Bounds.Width;
+            Height = screen.Bounds.Height;
+            WindowState = WindowState.Maximized;
+        }
+        else
+        {
+            // Windowed mode on the selected monitor, allow resizing and show controls
+            WindowStyle = WindowStyle.SingleBorderWindow;
+            ResizeMode = ResizeMode.CanResize;
+            WindowState = WindowState.Normal;
+            Left = screen.Bounds.Left + 100;
+            Top = screen.Bounds.Top + 100;
+            Width = Math.Min(1280, screen.Bounds.Width - 200);
+            Height = Math.Min(720, screen.Bounds.Height - 200);
+            Topmost = false;
+            ShowInTaskbar = true;
+            btnClose.Visibility = Visibility.Visible;
+        }
+    }
+
+    private void Window_StateChanged(object sender, EventArgs e)
+    {
+        // If user clicks maximize while in windowed mode, switch to borderless fullscreen
+        if (WindowState == WindowState.Maximized && !_isFullScreen)
+        {
+            // Determine which screen the window is on
+            var screens = ScreenUtilities.GetScreens();
+            var screenIndex = 0;
+            for (int i = 0; i < screens.Length; i++)
+            {
+                var s = screens[i];
+                if (Left >= s.Bounds.Left && Left < s.Bounds.Right)
+                {
+                    screenIndex = i;
+                    break;
+                }
+            }
+            ShowFullScreen(screenIndex, true);
+        }
+        else if (WindowState == WindowState.Normal && _isFullScreen)
+        {
+            // Exiting maximized while in fullscreen: restore to windowed
+            ShowFullScreen(_screenIndex, false);
+        }
     }
 
     public void StopPlayback()
@@ -77,8 +133,21 @@ public partial class ViewerWindow : Window
     {
         if (e.Key == Key.Escape)
         {
-            Close();
+            // If in full-screen, restore to windowed mode instead of closing
+            if (_isFullScreen)
+            {
+                ShowFullScreen(_screenIndex, false);
+            }
             e.Handled = true;
+            return;
+        }
+
+        if (e.Key == Key.F11)
+        {
+            // Toggle fullscreen/windowed
+            ShowFullScreen(_screenIndex, !_isFullScreen);
+            e.Handled = true;
+            return;
         }
     }
 
