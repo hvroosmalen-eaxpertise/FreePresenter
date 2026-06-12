@@ -19,10 +19,10 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore
-        run: dotnet restore FreePresenter.csproj
+        run: dotnet restore FreePresenter.csproj -r win-x64
 
       - name: Build
-        run: dotnet build FreePresenter.csproj -c Release --no-restore
+        run: dotnet build FreePresenter.csproj -c Release -r win-x64 --no-restore
 
       - name: Publish win-x64
         run: dotnet publish FreePresenter.csproj -c Release -r win-x64 --self-contained false -o ./publish/win-x64 --no-build
