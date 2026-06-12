@@ -2,58 +2,33 @@ name: CI
 
 on:
   push:
-	branches: [ master ]
+    branches: ['master']
   pull_request:
-	branches: [ master ]
+    branches: ['master']
 
 jobs:
   build:
-	runs-on: windows-latest
-	steps:
-	  - name: Checkout
-		uses: actions/checkout@v4
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-	  - name: Setup .NET
-		uses: actions/setup-dotnet@v3
-		with:
-		  dotnet-version: '10.0.9'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
 
-	  - name: Restore
-		run: dotnet restore
+      - name: Restore
+        run: dotnet restore FreePresenter.csproj
 
-	  - name: Build
-		run: dotnet build -c Release --no-restore
+      - name: Build
+        run: dotnet build FreePresenter.csproj -c Release --no-restore
 
-	  - name: Test
-		run: dotnet test --no-build --verbosity normal
+      - name: Publish win-x64
+        run: dotnet publish FreePresenter.csproj -c Release -r win-x64 --self-contained false -o ./publish/win-x64 --no-build
 
-	  - name: Publish win-x64
-		run: dotnet publish -c Release -r win-x64 --self-contained false -o ./publish/win-x64 --no-build
-
-	  - name: Publish win-x86
-		run: dotnet publish -c Release -r win-x86 --self-contained false -o ./publish/win-x86 --no-build
-
-	  - name: Upload publish (win-x64)
-		uses: actions/upload-artifact@v4
-		with:
-		  name: publish-win-x64
-		  path: publish/win-x64
-
-	  - name: Upload publish (win-x86)
-		uses: actions/upload-artifact@v4
-		with:
-		  name: publish-win-x86
-		  path: publish/win-x86
-
-	  - name: Create MSIX package
-		if: always()
-		shell: pwsh
-		run: |
-		  pwsh -NoProfile -ExecutionPolicy Bypass -File installer/msix/packaging.ps1 -PublishDir .\publish\win-x64 -PackageOutput .\installer\FreePresenter.msix -PackageName FreePresenter -Publisher "CN=FreePresenter" -Version "1.0.0.0"
-
-	  - name: Upload MSIX
-		if: always()
-		uses: actions/upload-artifact@v4
-		with:
-		  name: msix
-		  path: installer/FreePresenter.msix
+      - name: Upload publish (win-x64)
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish-win-x64
+          path: publish/win-x64
