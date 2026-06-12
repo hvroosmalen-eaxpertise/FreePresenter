@@ -57,10 +57,11 @@ if ($hasHeat -and $hasCandle -and $hasLight) {
 
 	# Find the File Id for the main exe in the harvested file
 	$exeName = 'FreePresenter.exe'
-	$harvestXml = Get-Content $harvestFile -Raw
-	# Match File Id="..." Source="$(var.SourceDir)\FreePresenter.exe" or similar
-	if ($harvestXml -match 'File\s+Id="([^"]+)"\s+Source="[^"]*' + [regex]::Escape($exeName) + '"') {
-		$exeFileId = $matches[1]
+	$harvestDoc = [xml](Get-Content $harvestFile -Raw)
+	$ns = @{ wix = 'http://schemas.microsoft.com/wix/2006/wi' }
+	$exeFile = Select-Xml -Xml $harvestDoc -XPath "//wix:File[contains(@Source, '$exeName')]" -Namespace $ns
+	if ($exeFile) {
+		$exeFileId = $exeFile.Node.Id
 		Write-Host "Found EXE file id: $exeFileId"
 	} else {
 		Write-Error "Could not find $exeName in $harvestFile. Ensure the published exe name matches."
