@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include=".github\workflows\ci-msi.yml" />
     <None Include=".github\workflows\ci.yml" />
   </ItemGroup>
 
