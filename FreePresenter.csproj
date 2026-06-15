@@ -15,4 +15,9 @@
     <None Include=".github\workflows\ci.yml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LibVLCSharp.WPF" Version="3.9.7.1" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.23.1" />
+  </ItemGroup>
+
 </Project>
