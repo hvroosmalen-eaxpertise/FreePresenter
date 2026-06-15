@@ -26,6 +26,11 @@ public partial class MainWindow : Window
         }
     }
 
+    private void BtnCloseApp_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
     private void Window_DragEnter(object sender, DragEventArgs e)
     {
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
